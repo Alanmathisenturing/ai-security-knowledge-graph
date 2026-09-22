@@ -1,32 +1,57 @@
 # Implementation Status
 
-Generated during Phase 0 repository audit on 2026-09-22.
+Updated during the Phase 1 domain-kernel transition on 2026-09-22.
 
 ## Evidence-based status
 
 | Area | Status | Evidence |
 |---|---|---|
-| Project metadata | IMPLEMENTED | `pyproject.toml` exists with Python package metadata and runtime dependencies. |
-| Package entry point | PARTIAL | `src/aiskg/__init__.py` exists, but the imported modules must be verified together. |
-| Domain model | PARTIAL | A package API is present, but the complete Pydantic ontology requested by the target architecture is not yet evidenced. |
-| Graph engine | PARTIAL | A graph module is referenced by the package API; complete analysis operations require verification. |
-| YAML loader | PARTIAL | A loader module is referenced by the package API; recursive multi-type loading requires verification. |
-| Validation | PARTIAL | A validation module is referenced by the package API; schema, mapping, evidence, and graph validators are not yet evidenced. |
-| CLI | PARTIAL | `pyproject.toml` declares the `aiskg` entry point; command implementation and exit behavior require verification. |
-| Knowledge dataset | PARTIAL | `knowledge/attacks` and `knowledge/evidence` directories exist; completeness and reference integrity require verification. |
-| JSON Schema | MISSING | No verified `schemas/json-schema/` implementation was present in the audited file listing. |
-| Ontology directories | MISSING | No verified layered `ontology/` implementation was present in the audited file listing. |
-| Framework mappings | MISSING | No verified OWASP, MITRE ATLAS, NIST AI RMF, or ISO/IEC 42001 mapping files were present. |
-| Examples | MISSING | No verified executable scenario examples were present. |
-| Documentation | PARTIAL | Basic README and contribution files exist; implementation documentation and status reporting were missing before this audit. |
-| CI | MISSING | No verified workflow implementation was present in the audited file listing. |
-| Test suite | PARTIAL | Test configuration is present in `pyproject.toml`; actual test files and results require execution in a Python environment. |
-| Coverage | UNTESTED | No coverage command result is available from this environment. |
-| Ruff | UNTESTED | No Ruff execution result is available from this environment. |
-| MyPy | UNTESTED | No MyPy execution result is available from this environment. |
+| Project metadata | IMPLEMENTED | `pyproject.toml` defines the package, runtime dependencies, and development tools. |
+| Package entry point | PARTIAL | `src/aiskg/__init__.py` exports the initial public API; compatibility has not been verified by an executed test run. |
+| Domain kernel | PARTIAL | `src/aiskg/models.py` contains typed enums, entity models, stable-ID validation, risk vectors, references, and relationship primitives. Execution and full semantic test coverage remain pending. |
+| Semantic distinctions | PARTIAL | Attack, vulnerability, technique, capability, impact, control, detection, evidence, event, observable, policy, and trust-boundary classes exist; relationship legality is not yet implemented. |
+| Stable identifiers | PARTIAL | Entity IDs have an ASKG/category/numeric pattern and category-prefix validation for core types; repository-wide uniqueness is not yet enforced. |
+| Graph engine | PARTIAL | `src/aiskg/graph.py` provides a NetworkX-based engine and analysis methods; integration with the typed domain kernel is not yet verified. |
+| YAML loader | PARTIAL | `src/aiskg/loader.py` supports recursive YAML loading for initial attack/evidence types; all domain types and cross-reference validation are pending. |
+| Validation | PARTIAL | Basic ID/reference helpers exist; schema, ontology, mapping, evidence, and graph validators are pending. |
+| CLI | PARTIAL | `pyproject.toml` declares the `aiskg` entry point; command behavior and exit codes are not yet verified by execution. |
+| Knowledge dataset | PARTIAL | Initial attack and evidence YAML entries exist; the canonical dataset is intentionally incomplete. |
+| JSON Schema | MISSING | No verified `schemas/json-schema/` implementation is present. |
+| Ontology directories | MISSING | No verified layered `ontology/` implementation is present. |
+| Framework mappings | MISSING | OWASP, MITRE ATLAS, NIST AI RMF, and ISO/IEC 42001 mappings are not implemented. |
+| Examples | MISSING | Executable scenario examples are not implemented. |
+| Documentation | PARTIAL | Baseline, implementation-status, and domain-model documents exist; documentation still needs synchronization with executable behavior. |
+| CI | PARTIAL | Project metadata contains test/lint configuration; a complete verified CI gate is not present. |
+| Test suite | PARTIAL | Test files exist in the repository; no execution result is available in this environment. |
+| Coverage | UNTESTED | No coverage command result is available. |
+| Ruff | UNTESTED | No Ruff execution result is available. |
+| MyPy | UNTESTED | No MyPy execution result is available. |
 
-## Audit conclusion
+## Phase tracker
 
-The repository is an initial scaffold, not production-ready. The next gate is to establish an executable baseline, then incrementally implement the domain model, schema system, loader, validators, graph projections, CLI, dataset, tests, and CI.
+1. Audit and baseline — documented; execution measurements unavailable.
+2. Domain model and Pydantic validation — in progress; implementation exists but is not execution-verified.
+3. Schema and ontology — pending.
+4. Loader and validation engine — pending expansion.
+5. Graph and attack/capability/trust analysis — pending integration verification.
+6. Dataset and scenarios — pending.
+7. Mappings and evidence — pending expansion.
+8. CLI and exports — pending verification and completion.
+9. Tests and coverage — pending execution and expansion.
+10. CI and security automation — pending.
+11. Documentation synchronization — pending.
+12. Release gate — blocked until all phase checks produce actual results.
 
-No production-readiness claim should be made until the checks in `docs/baseline.md` and the phase gates have actual results.
+## Current gate
+
+The repository is **active development** and is not production-ready. The next implementation gate is to execute and repair Phase 1:
+
+```bash
+python -m pip install -e '.[dev]'
+pytest --cov=aiskg --cov-report=term-missing
+ruff check .
+ruff format --check .
+mypy src
+```
+
+No test, coverage, lint, type-check, schema-validation, ontology-validation, or production-readiness claim may be reported without an actual command result.
